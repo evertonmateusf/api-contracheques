@@ -72,7 +72,7 @@ class ApiContrachequesApplicationTests {
 		ResultActions result = mockMvc.perform(
 				get("/funcionarios/" + codigo).contentType("application/json")
 				.header("Authorization", getToken()))
-				.andDo(print())
+				// .andDo(print())
 				.andExpect(status()
 				.isOk());
 
@@ -94,6 +94,12 @@ class ApiContrachequesApplicationTests {
 	}
 	@Test
 	void getFuncionarioByCodeNaoExistenteRecebe404() throws Exception {
+		String codigo = "9999";
+		
+		mockMvc.perform(
+				get("/funcionarios/" + codigo).contentType("application/json")
+				.header("Authorization", getToken()))
+				.andExpect(status().isNotFound());
 	}
 	@Test
 	void postFuncionarioSemAutenticarERecebe401() throws Exception {
