@@ -5,13 +5,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.text.SimpleDateFormat;
+import java.util.Map;
+import java.util.Optional;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.stone.apicontracheques.domain.Funcionario;
 import com.stone.apicontracheques.dto.credenciais.CredenciaisDTO;
+import com.stone.apicontracheques.repositories.FuncionarioRepository;
 import com.stone.apicontracheques.resources.FuncionarioResource;
+import com.stone.apicontracheques.services.FuncionarioService;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,15 +29,15 @@ import org.springframework.test.web.servlet.ResultActions;
 @SpringBootTest
 @AutoConfigureMockMvc
 class ApiContrachequesApplicationTests {
-	private String token;
+
 	@Autowired
 	private MockMvc mockMvc;
 
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	// @Autowired
-	// private FuncionarioService service;
+	@Autowired
+	private FuncionarioRepository funcionarioRepository;
 	@Autowired
 	private FuncionarioResource funcionarioResource;
 
@@ -36,37 +45,52 @@ class ApiContrachequesApplicationTests {
 	void contextLoads() {
 		Assertions.assertNotNull(funcionarioResource);
 	}
-	@Test
-	void getFuncionarioSemAutenticarERecebe401() throws Exception {
-	}
-	@Test
-	void getFuncionarioByCodeRecebe200() throws Exception {
-		String codigo = "1";
+
+	private String getToken() throws JsonProcessingException, Exception {
 		CredenciaisDTO credenciais = new CredenciaisDTO();
 		credenciais.setEmail("everton.mfernandes@gmail.com");
 		credenciais.setSenha("1234");
-		this.token = "";
+		ResultActions result = mockMvc.perform(
+				post("/login").contentType("application/json").content(objectMapper.writeValueAsString(credenciais)))
+				.andExpect(status().isOk());
+		return result.andReturn().getResponse().getHeader("Authorization");
+	}
+
+	@Test
+	void getFuncionarioSemAutenticarERecebe401() throws Exception {
+		String codigo = "1";
+		mockMvc.perform(
+				get("/funcionarios/" + codigo).contentType("application/json"))
+				.andExpect(status().isForbidden());
+	}
+
+	@Test
+	void getFuncionarioByCodeRecebe200() throws Exception {
+		String codigo = "1";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		ResultActions result = mockMvc.perform(post("/login")
-		.contentType("application/json")
-		.content(objectMapper.writeValueAsString(credenciais)))
-		.andDo(print())
-		.andExpect(status().isOk());
+		ResultActions result = mockMvc.perform(
+				get("/funcionarios/" + codigo).contentType("application/json")
+				.header("Authorization", getToken()))
+				.andDo(print())
+				.andExpect(status()
+				.isOk());
 
-		this.token = result.andReturn().getResponse().getHeader("Authorization");
-		// String resultString = result.andReturn().getResponse().getContentAsString();
-		// JacksonJsonParser jsonParser = new JacksonJsonParser();
-    	// return jsonParser.parseMap(resultString).get("access_token").toString();
-		mockMvc.perform(get("/funcionarios/" + codigo)
-		.contentType("application/json")
-		.header("Authorization", this.token))
-		.andDo(print())
-		.andExpect(status().isNotFound());
+		String resultString = result.andReturn().getResponse().getContentAsString();
+		JacksonJsonParser jsonParser = new JacksonJsonParser();
+		Map<String, Object> objReturned = jsonParser.parseMap(resultString);
+		Funcionario funcionario = funcionarioRepository.findById(1).get();
 
-		// Funcionario funcionarioReturn = service.find(codigo);
-
-		// JUnit5
-		// Assertions.assertEquals(funcionarioReturn.getNome(), "Funcionario teste");
+		Assertions.assertEquals(funcionario.getId(), objReturned.get("id"));
+		Assertions.assertEquals(funcionario.getNome(), objReturned.get("nome"));
+		Assertions.assertEquals(funcionario.getSobrenome(), objReturned.get("sobrenome"));
+		Assertions.assertEquals(funcionario.getDocumento(), objReturned.get("documento"));
+		Assertions.assertEquals(funcionario.getSetor(), objReturned.get("setor"));
+		Assertions.assertEquals(funcionario.getSalarioBruto(), objReturned.get("salarioBruto"));
+		Assertions.assertEquals(sdf.format(funcionario.getDataDeAdmissao()), objReturned.get("dataDeAdmissao"));
+		Assertions.assertEquals(funcionario.isDescontaPlanoDeSaude(), objReturned.get("descontaPlanoDeSaude"));
+		Assertions.assertEquals(funcionario.isDescontaPlanoDental(), objReturned.get("descontaPlanoDental"));
+		Assertions.assertEquals(funcionario.isDescontaValeTransporte(), objReturned.get("descontaValeTransporte"));
 	}
 	@Test
 	void getFuncionarioByCodeNaoExistenteRecebe404() throws Exception {
