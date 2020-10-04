@@ -3,11 +3,10 @@ package com.stone.apicontracheques.dto;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.validation.constraints.NotEmpty;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.br.CPF;
 
 public class FuncionarioDTO implements Serializable {
@@ -24,7 +23,7 @@ public class FuncionarioDTO implements Serializable {
 	private String documento;
 	private String setor;
 	private double salarioBruto;
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "UTC")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Sao_Paulo")
 	private Date dataDeAdmissao;
 	private boolean descontaPlanoDeSaude;
 	private boolean descontaPlanoDental;

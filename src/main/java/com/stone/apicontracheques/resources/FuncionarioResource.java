@@ -55,7 +55,7 @@ public class FuncionarioResource {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{codigo}").buildAndExpand(obj.getId())
 				.toUri();
-		return ResponseEntity.created(uri).build();
+		return ResponseEntity.created(uri).body(obj);
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
