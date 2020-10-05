@@ -7,9 +7,11 @@ import javax.validation.Valid;
 import com.stone.apicontracheques.domain.Funcionario;
 import com.stone.apicontracheques.dto.FuncionarioDTO;
 import com.stone.apicontracheques.repositories.FuncionarioRepository;
+import com.stone.apicontracheques.services.exceptions.DataIntegrityException;
 import com.stone.apicontracheques.services.exceptions.ObjectNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -40,11 +42,6 @@ public class FuncionarioService {
 	public Page<Funcionario> findAll(Integer page, Integer linesPerPage, Sort orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, orderBy);
 		return repo.findAll(pageRequest);
-	}
-
-	public Page<Funcionario> findByName(String text, Integer page, Integer linesPerPage, Sort sort) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, sort);
-		return repo.findByNome(text.toLowerCase(), pageRequest);
 	}
 
 	public Funcionario fromDTO(@Valid Integer codigo, FuncionarioDTO objDto) {
@@ -82,15 +79,28 @@ public class FuncionarioService {
 	}
 
 	@Transactional
-	public Funcionario insert(Funcionario obj) {
+	public Funcionario insert(Funcionario obj) throws DataIntegrityException {
 		obj.setId(null);
-		return repo.save(obj);
+		try {
+			return repo.save(obj);
+		}catch(DataIntegrityViolationException e) {
+			throw new DataIntegrityException("CPF " + obj.getDocumento() + " já existente.");
+		}
 	}
 
 	public Funcionario update(Funcionario obj) {
 		find(obj.getId());
 		// obj.setValorComissao(this.calculaComissao(obj));
 		return repo.save(obj);
+	}
+
+	public void delete(Integer codigo) {
+		find(codigo);
+		try {
+			repo.deleteById(codigo);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não foi possível excluir o funcionário.");
+		}
 	}
 
 	// public ComissoesDTO sumValorComissaoAPagar(Integer tecnicoCodigo) throws

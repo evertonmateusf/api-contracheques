@@ -1,8 +1,6 @@
 package com.stone.apicontracheques.resources;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -13,9 +11,7 @@ import com.stone.apicontracheques.services.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import io.swagger.annotations.ApiOperation;
 import javassist.tools.rmi.ObjectNotFoundException;
 
 @RestController
@@ -32,7 +29,8 @@ public class UsuarioResource {
 
 	@Autowired
 	UsuarioService service;
-
+	
+	@ApiOperation(value="Busca usuário por código")
 	@RequestMapping(value="/{codigo}",method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer codigo) throws ObjectNotFoundException {
 		 
@@ -40,28 +38,8 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@RequestMapping(value = "/email", method = RequestMethod.GET)
-	public ResponseEntity<Usuario> findByEmail(@RequestParam(value = "value") String email) {
-		Usuario obj = service.findByEmail(email);
-		return ResponseEntity.ok().body(obj);
-	}
-
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/admin/email", method = RequestMethod.GET)
-	public ResponseEntity<Usuario> findAdminByEmail(@RequestParam(value = "value") String email) {
-		Usuario obj = service.findByEmail(email);
-		return ResponseEntity.ok().body(obj);
-	}
-	
+	@ApiOperation(value="Busca paginada de usuários")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ResponseEntity<List<UsuarioDTO>> findAll() throws ObjectNotFoundException {
-
-		List<Usuario> list = service.findAll();
-		List<UsuarioDTO> listDto = list.stream().map(obj -> new UsuarioDTO(obj)).collect(Collectors.toList());
-		return ResponseEntity.ok().body(listDto);
-	}
-
-	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<UsuarioDTO>> pagedFind(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBy", defaultValue = "codigo") String orderBy,
@@ -73,6 +51,7 @@ public class UsuarioResource {
 		return ResponseEntity.ok().body(listDto);
 	}
 
+	@ApiOperation(value="Insere um novo usuário")
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> insert(@Valid @RequestBody UsuarioNewDTO objDto) {
 		Usuario obj = service.fromDTO(objDto);
@@ -82,6 +61,7 @@ public class UsuarioResource {
 		return ResponseEntity.created(uri).build();
 	}
 
+	@ApiOperation(value="Altera um usuário")
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@Valid @RequestBody UsuarioNewDTO objDTO, @PathVariable Integer codigo) {
 		Usuario obj = service.fromDTO(objDTO);
@@ -90,24 +70,11 @@ public class UsuarioResource {
 		return ResponseEntity.noContent().build();
 	}
 
+	@ApiOperation(value="Deleta um usuário")
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer codigo) throws ObjectNotFoundException {
-
 		service.delete(codigo);
 		return ResponseEntity.noContent().build();
 	}
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
-	@RequestMapping(value = "/findByText", method = RequestMethod.GET)
-	public ResponseEntity<Page<Usuario>> pagedFindByText(@RequestParam(value = "text", defaultValue = "") String text,
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
-			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
-			@RequestParam(value = "orderBy", defaultValue = "codigo") String orderBy,
-			@RequestParam(value = "direction", defaultValue = "ASC") String direction) throws ObjectNotFoundException {
-		Sort sort = Sort.by(orderBy.split(","));
-
-		Page<Usuario> list = service.findByText(text, page, linesPerPage, sort);
-
-		return ResponseEntity.ok().body(list);
-	}
 }

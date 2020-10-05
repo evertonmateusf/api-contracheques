@@ -2,6 +2,7 @@ package com.stone.apicontracheques;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 // import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 // import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 // import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -195,7 +196,7 @@ class FuncionariosResourceTests {
 		funcionarioDTO.setDocumento("00099458810");
 		funcionarioDTO.setSetor("RH");
 		funcionarioDTO.setSalarioBruto(1000);
-		funcionarioDTO.setDataDeAdmissao(sdf.parse("02/01/2019 15:33"));
+		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-02"));
 		funcionarioDTO.setDescontaPlanoDeSaude(true);
 		funcionarioDTO.setDescontaPlanoDental(true);
 		funcionarioDTO.setDescontaValeTransporte(true);
@@ -206,13 +207,28 @@ class FuncionariosResourceTests {
 				.header("Authorization", getToken()))
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andDo(print())
-				.andExpect(status().is4xxClientError());
-				// .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].fieldName").value("documento"))
-				// .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].message").value("CPF inválido"));
+				.andExpect(status().is4xxClientError())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.error").value("Integridade de dados"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("CPF 00099458810 já existente."));
 	}
 	@Test
 	void putFuncionarioSemAutenticarERecebe403() throws Exception {
-		Assertions.assertEquals(1, 2);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+		funcionarioDTO.setNome("Daiane Sarah Alterado");
+		funcionarioDTO.setSobrenome("Porto Seguro");
+		funcionarioDTO.setDocumento("00099458810");
+		funcionarioDTO.setSetor("Vendas");
+		funcionarioDTO.setSalarioBruto(7000);
+		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-03"));
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(true);
+		mockMvc.perform(
+			put("/funcionarios")
+			.contentType("application/json")
+			.content(objectMapper.writeValueAsString(funcionarioDTO)))
+			.andExpect(status().isForbidden());
 	}
 	@Test
 	void putFuncionarioJaExistenteRecebe200() throws Exception {

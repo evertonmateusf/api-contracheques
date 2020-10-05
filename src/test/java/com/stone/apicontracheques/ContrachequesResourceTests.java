@@ -50,7 +50,7 @@ class ContrachequesResourceTests {
 	}
 
 	@Test
-	void getContraChequeSemAutenticarERecebe401() throws Exception {
+	void getContraChequeSemAutenticarERecebe403() throws Exception {
 		Assertions.assertEquals(1, 2);
 	}
 	@Test

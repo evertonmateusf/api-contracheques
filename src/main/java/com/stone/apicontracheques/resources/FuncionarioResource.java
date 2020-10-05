@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import com.stone.apicontracheques.domain.Funcionario;
 import com.stone.apicontracheques.dto.FuncionarioDTO;
 import com.stone.apicontracheques.services.FuncionarioService;
+import com.stone.apicontracheques.services.exceptions.DataIntegrityException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import io.swagger.annotations.ApiOperation;
 import javassist.tools.rmi.ObjectNotFoundException;
 
 @RestController
@@ -30,14 +32,14 @@ public class FuncionarioResource {
 	@Autowired
 	FuncionarioService service;
 	
+	@ApiOperation(value="Busca funcionário por código")
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer codigo) throws ObjectNotFoundException {
-
 		Funcionario obj = service.find(codigo);
 		return ResponseEntity.ok().body(obj);
 	}
 
-	// @PreAuthorize("hasAnyRole('ADMIN')")
+	@ApiOperation(value="Busca paginada de funcionários")
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ResponseEntity<Page<Funcionario>> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
@@ -48,9 +50,10 @@ public class FuncionarioResource {
 		return ResponseEntity.ok().body(list);
 	}
 
+	@ApiOperation(value="Insere um novo funcionário")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> insert(@Valid @RequestBody FuncionarioDTO objDTO) {
+	public ResponseEntity<?> insert(@Valid @RequestBody FuncionarioDTO objDTO)  throws DataIntegrityException {
 		Funcionario obj = service.fromDTO(objDTO);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{codigo}").buildAndExpand(obj.getId())
@@ -58,6 +61,7 @@ public class FuncionarioResource {
 		return ResponseEntity.created(uri).body(obj);
 	}
 
+	@ApiOperation(value="Altera um funcionário")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@Valid @RequestBody FuncionarioDTO objDTO, @PathVariable Integer codigo) {
@@ -66,18 +70,11 @@ public class FuncionarioResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@RequestMapping(value="/findByName",method=RequestMethod.GET)
-	public ResponseEntity<Page<Funcionario>> pagedFindByText(
-			@RequestParam(value="name", defaultValue="") String text, 
-			@RequestParam(value="page", defaultValue="0") Integer page, 
-			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage, 
-			@RequestParam(value="orderBy", defaultValue="codigo") String orderBy, 
-			@RequestParam(value="direction", defaultValue="ASC") String direction) throws ObjectNotFoundException {
-		Sort sort = Sort.by(orderBy.split(","));
-		
-		Page<Funcionario> list = service.findByName(text, page, linesPerPage, sort);
-		
-		return ResponseEntity.ok().body(list);
+	@ApiOperation(value="Deleta um funcionário")
+	@RequestMapping(value = "/{codigo}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Integer codigo) throws ObjectNotFoundException {
+		service.delete(codigo);
+		return ResponseEntity.noContent().build();
 	}
 
 }

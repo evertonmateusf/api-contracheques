@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -80,20 +79,6 @@ public class UsuarioService {
 		return list;
 	}
 
-	public Usuario findByEmail(String email) {
-		UsuarioSpringSecurity user = UserService.authenticated();
-		if (user == null || !user.hasRole(PerfilAcesso.ADMINISTRADOR) && !email.equals(user.getUsername())) {
-			throw new AuthorizationException("Acesso negado");
-		}
-
-		Usuario obj = repo.findByEmail(email);
-		if (obj == null) {
-			throw new ObjectNotFoundException(
-					"Objeto não encontrado! Id: " + user.getCodigo() + ", Tipo: " + Usuario.class.getName());
-		}
-		return obj;
-	}
-
 	public Page<Usuario> pagedFind(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
@@ -119,8 +104,4 @@ public class UsuarioService {
 		return usuario;
 	}
 	
-	public Page<Usuario> findByText(String text, Integer page, Integer linesPerPage, Sort sort) {
-		PageRequest pageRequest = PageRequest.of(page, linesPerPage, sort);
-		return repo.findByText(text.toLowerCase(), pageRequest);
-	}
 }
