@@ -188,7 +188,27 @@ class FuncionariosResourceTests {
 	}
 	@Test
 	void postFuncionarioJaExistenteRecebe400JaExiste() throws Exception {
-		Assertions.assertEquals(1, 2);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+		funcionarioDTO.setNome("Daiane Sarah");
+		funcionarioDTO.setSobrenome("Porto");
+		funcionarioDTO.setDocumento("00099458810");
+		funcionarioDTO.setSetor("RH");
+		funcionarioDTO.setSalarioBruto(1000);
+		funcionarioDTO.setDataDeAdmissao(sdf.parse("02/01/2019 15:33"));
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(true);
+		funcionarioDTO.setDescontaValeTransporte(true);
+		mockMvc.perform(
+				post("/funcionarios")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(funcionarioDTO))
+				.header("Authorization", getToken()))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().is4xxClientError());
+				// .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].fieldName").value("documento"))
+				// .andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].message").value("CPF inválido"));
 	}
 	@Test
 	void putFuncionarioSemAutenticarERecebe403() throws Exception {
