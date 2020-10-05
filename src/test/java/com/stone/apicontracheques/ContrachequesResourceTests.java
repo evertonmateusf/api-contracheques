@@ -51,57 +51,75 @@ class ContrachequesResourceTests {
 
 	@Test
 	void getContraChequeSemAutenticarERecebe401() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraChequeNaoExistenteRecebe404() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraCheque07_5PorCentoINSS() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraCheque9PorCentoINSS() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraCheque12PorCentoINSS() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraCheque14PorCentoINSS() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraCheque07_5PorCentoIR() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraCheque15PorCentoIR() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraCheque22_5PorCentoIR() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraCheque27_5PorCentoIR() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraChequeComDescontoPlanoSaudeEDentalETransporte() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraChequeComDescontoDentalETransporte() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraChequeComDescontoPlanoSaudeETransporte() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraChequeComDescontoPlanoSaudeEDental() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraChequeComDescontoPlanoSaude() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraChequeComDescontoDental() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraChequeComDescontoTransporte() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void getContraChequeCom8PorCentoFGTS() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 
 }

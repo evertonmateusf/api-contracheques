@@ -108,7 +108,7 @@ class FuncionariosResourceTests {
 	}
 	@Test
 	void postFuncionarioSemAutenticarERecebe401() throws Exception {
-
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void postFuncionarioNovoRecebe201() throws Exception {
@@ -148,18 +148,41 @@ class FuncionariosResourceTests {
 	}
 	@Test
 	void postFuncionarioCPFInvalidoRecebe400CPFInvalido() throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+		funcionarioDTO.setNome("Carolina Heloisa Emilly");
+		funcionarioDTO.setSobrenome("Aparício");
+		funcionarioDTO.setDocumento("12345678901");
+		funcionarioDTO.setSetor("Marketing");
+		funcionarioDTO.setSalarioBruto(9865);
+		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-02 13:55"));
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(false);
+		mockMvc.perform(
+				post("/funcionarios")
+				.contentType("application/json")
+				.content(objectMapper.writeValueAsString(funcionarioDTO))
+				.header("Authorization", getToken()))
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().is4xxClientError());
 	}
 	@Test
 	void postFuncionarioJaExistenteRecebe400JaExiste() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void putFuncionarioSemAutenticarERecebe401() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void putFuncionarioJaExistenteRecebe200() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	@Test
 	void putFuncionarioNaoExistenteRecebe404() throws Exception {
+		Assertions.assertEquals(1, 2);
 	}
 	
 }
