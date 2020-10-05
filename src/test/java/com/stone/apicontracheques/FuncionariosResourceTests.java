@@ -29,6 +29,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -63,7 +64,7 @@ class FuncionariosResourceTests {
 	}
 
 	@Test
-	void getFuncionarioSemAutenticarERecebe401() throws Exception {
+	void getFuncionarioSemAutenticarERecebe403() throws Exception {
 		String codigo = "1";
 		mockMvc.perform(
 				get("/funcionarios/" + codigo).contentType("application/json"))
@@ -107,8 +108,23 @@ class FuncionariosResourceTests {
 				.andExpect(status().isNotFound());
 	}
 	@Test
-	void postFuncionarioSemAutenticarERecebe401() throws Exception {
-		Assertions.assertEquals(1, 2);
+	void postFuncionarioSemAutenticarERecebe403() throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+		funcionarioDTO.setNome("Carolina Heloisa Emilly");
+		funcionarioDTO.setSobrenome("Aparício");
+		funcionarioDTO.setDocumento("22222166306");
+		funcionarioDTO.setSetor("Marketing");
+		funcionarioDTO.setSalarioBruto(9865);
+		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-02 13:55"));
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(false);
+		mockMvc.perform(
+			post("/funcionarios")
+			.contentType("application/json")
+			.content(objectMapper.writeValueAsString(funcionarioDTO)))
+			.andExpect(status().isForbidden());
 	}
 	@Test
 	void postFuncionarioNovoRecebe201() throws Exception {
@@ -166,14 +182,16 @@ class FuncionariosResourceTests {
 				.header("Authorization", getToken()))
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andDo(print())
-				.andExpect(status().is4xxClientError());
+				.andExpect(status().is4xxClientError())
+				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].fieldName").value("documento"))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].message").value("CPF inválido"));
 	}
 	@Test
 	void postFuncionarioJaExistenteRecebe400JaExiste() throws Exception {
 		Assertions.assertEquals(1, 2);
 	}
 	@Test
-	void putFuncionarioSemAutenticarERecebe401() throws Exception {
+	void putFuncionarioSemAutenticarERecebe403() throws Exception {
 		Assertions.assertEquals(1, 2);
 	}
 	@Test
