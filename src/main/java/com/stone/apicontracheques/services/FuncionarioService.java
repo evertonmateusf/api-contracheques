@@ -47,7 +47,6 @@ public class FuncionarioService {
 	public Funcionario fromDTO(@Valid Integer codigo, FuncionarioDTO objDto) {
 		Funcionario funcionario = find(codigo);
 
-		funcionario.setId(objDto.getId());
 		funcionario.setNome(objDto.getNome());
 		funcionario.setSobrenome(objDto.getSobrenome());
 		funcionario.setDocumento(objDto.getDocumento());

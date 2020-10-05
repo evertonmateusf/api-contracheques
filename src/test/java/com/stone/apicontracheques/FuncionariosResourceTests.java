@@ -225,14 +225,43 @@ class FuncionariosResourceTests {
 		funcionarioDTO.setDescontaPlanoDental(false);
 		funcionarioDTO.setDescontaValeTransporte(true);
 		mockMvc.perform(
-			put("/funcionarios")
+			put("/funcionarios/1")
 			.contentType("application/json")
 			.content(objectMapper.writeValueAsString(funcionarioDTO)))
 			.andExpect(status().isForbidden());
 	}
 	@Test
-	void putFuncionarioJaExistenteRecebe200() throws Exception {
-		Assertions.assertEquals(1, 2);
+	void putFuncionarioJaExistenteRecebe204() throws Exception {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+		funcionarioDTO.setNome("Daiane Sarah Alterado");
+		funcionarioDTO.setSobrenome("Porto Seguro");
+		funcionarioDTO.setDocumento("00099458810");
+		funcionarioDTO.setSetor("Vendas");
+		funcionarioDTO.setSalarioBruto(7000);
+		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-03"));
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(true);
+		mockMvc.perform(
+			put("/funcionarios/1")
+			.contentType("application/json")
+			.content(objectMapper.writeValueAsString(funcionarioDTO))
+			.header("Authorization", getToken()))
+			.andDo(print())
+			.andExpect(status().isNoContent());
+		Funcionario funcionario = funcionarioRepository.findById(1).get();
+
+		Assertions.assertEquals(funcionario.getId(), 1);
+		Assertions.assertEquals(funcionario.getNome(), funcionarioDTO.getNome());
+		Assertions.assertEquals(funcionario.getSobrenome(), funcionarioDTO.getSobrenome());
+		Assertions.assertEquals(funcionario.getDocumento(), funcionarioDTO.getDocumento());
+		Assertions.assertEquals(funcionario.getSetor(), funcionarioDTO.getSetor());
+		Assertions.assertEquals(funcionario.getSalarioBruto(), funcionarioDTO.getSalarioBruto());
+		Assertions.assertEquals(sdf.format(funcionario.getDataDeAdmissao()), sdf.format(funcionarioDTO.getDataDeAdmissao()));
+		Assertions.assertEquals(funcionario.isDescontaPlanoDeSaude(), funcionarioDTO.isDescontaPlanoDeSaude());
+		Assertions.assertEquals(funcionario.isDescontaPlanoDental(), funcionarioDTO.isDescontaPlanoDental());
+		Assertions.assertEquals(funcionario.isDescontaValeTransporte(), funcionarioDTO.isDescontaValeTransporte());
 	}
 	@Test
 	void putFuncionarioNaoExistenteRecebe404() throws Exception {
