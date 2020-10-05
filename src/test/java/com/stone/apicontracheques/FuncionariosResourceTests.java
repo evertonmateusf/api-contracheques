@@ -3,6 +3,7 @@ package com.stone.apicontracheques;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 // import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 // import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 // import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -265,7 +266,50 @@ class FuncionariosResourceTests {
 	}
 	@Test
 	void putFuncionarioNaoExistenteRecebe404() throws Exception {
-		Assertions.assertEquals(1, 2);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		FuncionarioDTO funcionarioDTO = new FuncionarioDTO();
+		funcionarioDTO.setNome("Daiane Sarah Alterado");
+		funcionarioDTO.setSobrenome("Porto Seguro");
+		funcionarioDTO.setDocumento("00099458810");
+		funcionarioDTO.setSetor("Vendas");
+		funcionarioDTO.setSalarioBruto(7000);
+		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-03"));
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(true);
+		mockMvc.perform(
+			put("/funcionarios/9999")
+			.contentType("application/json")
+			.content(objectMapper.writeValueAsString(funcionarioDTO))
+			.header("Authorization", getToken()))
+			.andDo(print())
+			.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	void deleteFuncionarioSemAutenticarERecebe403() throws Exception {
+		mockMvc.perform(
+			delete("/funcionarios/9")
+			.contentType("application/json"))
+			.andExpect(status().isForbidden());
+	}
+	@Test
+	void deleteFuncionarioJaExistenteRecebe204() throws Exception {
+		mockMvc.perform(
+			delete("/funcionarios/9")
+			.contentType("application/json")
+			.header("Authorization", getToken()))
+			.andDo(print())
+			.andExpect(status().isNoContent());
+	}
+	@Test
+	void deleteFuncionarioNaoExistenteRecebe404() throws Exception {
+		mockMvc.perform(
+			delete("/funcionarios/9999")
+			.contentType("application/json")
+			.header("Authorization", getToken()))
+			.andDo(print())
+			.andExpect(status().isNotFound());
 	}
 	
 }

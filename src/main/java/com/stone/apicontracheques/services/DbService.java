@@ -134,7 +134,18 @@ public class DbService {
 		fun8.setDescontaPlanoDental(false);
 		fun8.setDescontaValeTransporte(false);
 
-		funcionarioRepository.saveAll(Arrays.asList(fun1,fun2,fun3,fun4,fun5,fun6));
+		Funcionario fun9 = new Funcionario();
+		fun9.setNome("Funcionario Delete");
+		fun9.setSobrenome("Porto");
+		fun9.setDocumento("25910888021");
+		fun9.setSetor("RH");
+		fun9.setSalarioBruto(1000);
+		fun9.setDataDeAdmissao(sdf.parse("02/01/2019 15:33"));
+		fun9.setDescontaPlanoDeSaude(true);
+		fun9.setDescontaPlanoDental(true);
+		fun9.setDescontaValeTransporte(true);
+
+		funcionarioRepository.saveAll(Arrays.asList(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9));
 		
 	}
 }
