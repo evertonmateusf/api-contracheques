@@ -4,9 +4,14 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.stone.apicontracheques.domain.CalculadoraContracheque;
+import com.stone.apicontracheques.domain.Contracheque;
 import com.stone.apicontracheques.domain.Funcionario;
+import com.stone.apicontracheques.domain.enums.PerfilAcesso;
 import com.stone.apicontracheques.dto.FuncionarioDTO;
 import com.stone.apicontracheques.repositories.FuncionarioRepository;
+import com.stone.apicontracheques.security.UsuarioSpringSecurity;
+import com.stone.apicontracheques.services.exceptions.AuthorizationException;
 import com.stone.apicontracheques.services.exceptions.DataIntegrityException;
 import com.stone.apicontracheques.services.exceptions.ObjectNotFoundException;
 
@@ -28,12 +33,10 @@ public class FuncionarioService {
 	// private UsuarioService usuarioService;
 
 	public Funcionario find(Integer codigo) throws ObjectNotFoundException {
-		// UsuarioSpringSecurity user = UserService.authenticated();
-		// if (user == null || (!user.hasRole(PerfilAcesso.ADMINISTRADOR) &&
-		// !tecnicoCodigo.equals(user.getId()))) {
-		// throw new AuthorizationException("Acesso negado." + tecnicoCodigo + "-" +
-		// user.getId());
-		// }
+		UsuarioSpringSecurity user = UserService.authenticated();
+		if (user == null || (!user.hasRole(PerfilAcesso.ADMINISTRADOR) && !codigo.equals(user.getCodigo()))) {
+			throw new AuthorizationException("Acesso negado." + codigo + "-" + user.getCodigo());
+		}
 		Optional<Funcionario> obj = repo.findById(codigo);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado. Codigo:" + codigo + ", Tipo" + Funcionario.class.getName()));
@@ -82,7 +85,7 @@ public class FuncionarioService {
 		obj.setId(null);
 		try {
 			return repo.save(obj);
-		}catch(DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("CPF " + obj.getDocumento() + " já existente.");
 		}
 	}
@@ -102,18 +105,16 @@ public class FuncionarioService {
 		}
 	}
 
-	// public ComissoesDTO sumValorComissaoAPagar(Integer tecnicoCodigo) throws
-	// ObjectNotFoundException {
-	// UsuarioSpringSecurity user = UserService.authenticated();
-	// if (user == null || (!user.hasRole(PerfilAcesso.ADMINISTRADOR) &&
-	// !tecnicoCodigo.equals(user.getId()))) {
-	// throw new AuthorizationException("Acesso negado." + tecnicoCodigo + "-" +
-	// user.getId());
-	// }
-	// Tecnico tecnico = tecnicoService.find(tecnicoCodigo);
-	// return new ComissoesDTO(repo.sumValorComissao(tecnico,
-	// StatusFuncionario.REALIZADO.getId(), false));
-	// }
+	public Contracheque getContracheque(Integer codigo) throws ObjectNotFoundException {
+		UsuarioSpringSecurity user = UserService.authenticated();
+		if (user == null || (!user.hasRole(PerfilAcesso.ADMINISTRADOR) && !codigo.equals(user.getCodigo()))) {
+			throw new AuthorizationException("Acesso negado." + codigo + "-" + user.getCodigo());
+		}
+		Funcionario funcionario = find(codigo);
+		CalculadoraContracheque calculadoraContracheque = new CalculadoraContracheque(funcionario);
+		Contracheque contracheque = calculadoraContracheque.getContraCheque();
+		return contracheque;
+	}
 
 	// private double calculaComissao(Funcionario obj) {
 	// return (obj.getValorTotalCobrado() - (obj.getValorTotalCobrado() *

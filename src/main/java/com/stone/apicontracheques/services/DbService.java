@@ -27,17 +27,6 @@ public class DbService {
 
 	public void instantiateTestDatabase() throws ParseException {
 
-		// Estado estadoSP = new Estado(null, "SP", "São Paulo");
-
-		// Cidade cidade1 = new Cidade(null, "Guarulhos", estadoSP);
-		// Cidade cidade1 = new Cidade(null, "São Paulo", estadoSP);
-		
-
-		// estadoSP.getCidades().addAll(Arrays.asList(cidade1, cidade2));
-
-		// estadoRepository.saveAll(Arrays.asList(estadoSP));
-		// cidadeRepository.saveAll(Arrays.asList(cidade1, cidade2));
-
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		Usuario usr = new Usuario(null, "Administrador", "everton.mfernandes@gmail.com", passEncoder.encode("1234"),
 				null, new Date(System.currentTimeMillis()), StatusUsuario.ATIVO);

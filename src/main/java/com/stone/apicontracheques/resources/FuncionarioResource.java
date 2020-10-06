@@ -4,6 +4,7 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
+import com.stone.apicontracheques.domain.Contracheque;
 import com.stone.apicontracheques.domain.Funcionario;
 import com.stone.apicontracheques.dto.FuncionarioDTO;
 import com.stone.apicontracheques.services.FuncionarioService;
@@ -31,11 +32,18 @@ public class FuncionarioResource {
 
 	@Autowired
 	FuncionarioService service;
-	
-	@ApiOperation(value="Busca funcionário por código")
+
+	@ApiOperation(value = "Busca funcionário por código")
 	@RequestMapping(value = "/{codigo}", method = RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer codigo) throws ObjectNotFoundException {
 		Funcionario obj = service.find(codigo);
+		return ResponseEntity.ok().body(obj);
+	}
+
+	@ApiOperation(value = "Devolve o contracheque do funcionário do mês atual")
+	@RequestMapping(value = "/{codigo}/contracheque", method = RequestMethod.GET)
+	public ResponseEntity<?> getContracheque(@PathVariable Integer codigo) throws ObjectNotFoundException {
+		Contracheque obj = service.getContracheque(codigo);
 		return ResponseEntity.ok().body(obj);
 	}
 
