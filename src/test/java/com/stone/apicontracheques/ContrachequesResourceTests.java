@@ -14,7 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stone.apicontracheques.dto.ContrachequeDTO;
 import com.stone.apicontracheques.dto.credenciais.CredenciaisDTO;
-import com.stone.apicontracheques.repositories.FuncionarioRepository;
 import com.stone.apicontracheques.resources.FuncionarioResource;
 
 import org.junit.jupiter.api.Assertions;
@@ -35,8 +34,6 @@ class ContrachequesResourceTests {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Autowired
-	private FuncionarioRepository funcionarioRepository;
 	@Autowired
 	private FuncionarioResource funcionarioResource;
 
