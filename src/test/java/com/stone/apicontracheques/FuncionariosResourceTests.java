@@ -144,7 +144,7 @@ class FuncionariosResourceTests {
 				.content(objectMapper.writeValueAsString(funcionarioDTO))
 				.header("Authorization", getToken()))
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-				.andDo(print())
+				// .andDo(print())
 				.andExpect(status().isCreated());
 		JacksonJsonParser jsonParser = new JacksonJsonParser();
 		Map<String, Object> objReturned = jsonParser.parseMap(result.andReturn().getResponse().getContentAsString());
@@ -180,7 +180,7 @@ class FuncionariosResourceTests {
 				.content(objectMapper.writeValueAsString(funcionarioDTO))
 				.header("Authorization", getToken()))
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-				.andDo(print())
+				// .andDo(print())
 				.andExpect(status().is4xxClientError())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].fieldName").value("documento"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.errors[0].message").value("CPF inválido"));
@@ -204,7 +204,7 @@ class FuncionariosResourceTests {
 				.content(objectMapper.writeValueAsString(funcionarioDTO))
 				.header("Authorization", getToken()))
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-				.andDo(print())
+				// .andDo(print())
 				.andExpect(status().is4xxClientError())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.error").value("Integridade de dados"))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.message").value("CPF 00099458810 já existente."));
@@ -246,7 +246,7 @@ class FuncionariosResourceTests {
 			.contentType("application/json")
 			.content(objectMapper.writeValueAsString(funcionarioDTO))
 			.header("Authorization", getToken()))
-			.andDo(print())
+			// .andDo(print())
 			.andExpect(status().isNoContent());
 		Funcionario funcionario = funcionarioRepository.findById(1).get();
 
@@ -279,7 +279,7 @@ class FuncionariosResourceTests {
 			.contentType("application/json")
 			.content(objectMapper.writeValueAsString(funcionarioDTO))
 			.header("Authorization", getToken()))
-			.andDo(print())
+			// .andDo(print())
 			.andExpect(status().isNotFound());
 	}
 	
@@ -296,7 +296,7 @@ class FuncionariosResourceTests {
 			delete("/funcionarios/9")
 			.contentType("application/json")
 			.header("Authorization", getToken()))
-			.andDo(print())
+			// .andDo(print())
 			.andExpect(status().isNoContent());
 	}
 	@Test
@@ -305,7 +305,7 @@ class FuncionariosResourceTests {
 			delete("/funcionarios/9999")
 			.contentType("application/json")
 			.header("Authorization", getToken()))
-			.andDo(print())
+			// .andDo(print())
 			.andExpect(status().isNotFound());
 	}
 	

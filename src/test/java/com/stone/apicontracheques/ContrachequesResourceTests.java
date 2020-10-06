@@ -76,7 +76,9 @@ class ContrachequesResourceTests {
 		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
 
 		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
-				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
+				.header("Authorization", getToken()))
+				// .andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
 				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
 				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
@@ -110,7 +112,9 @@ class ContrachequesResourceTests {
 		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
 
 		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
-				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
+				.header("Authorization", getToken()))
+				// .andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
 				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
 				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
@@ -147,7 +151,9 @@ class ContrachequesResourceTests {
 		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
 
 		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
-				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
+				.header("Authorization", getToken()))
+				// .andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
 				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
 				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
@@ -184,7 +190,9 @@ class ContrachequesResourceTests {
 		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
 
 		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
-				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
+				.header("Authorization", getToken()))
+				// .andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
 				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
 				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
@@ -221,7 +229,9 @@ class ContrachequesResourceTests {
 		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
 
 		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
-				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
+				.header("Authorization", getToken()))
+				// .andDo(print())
+				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
 				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
 				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
