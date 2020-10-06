@@ -5,9 +5,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import com.stone.apicontracheques.domain.CalculadoraContracheque;
-import com.stone.apicontracheques.domain.Contracheque;
 import com.stone.apicontracheques.domain.Funcionario;
 import com.stone.apicontracheques.domain.enums.PerfilAcesso;
+import com.stone.apicontracheques.dto.ContrachequeDTO;
 import com.stone.apicontracheques.dto.FuncionarioDTO;
 import com.stone.apicontracheques.repositories.FuncionarioRepository;
 import com.stone.apicontracheques.security.UsuarioSpringSecurity;
@@ -105,14 +105,14 @@ public class FuncionarioService {
 		}
 	}
 
-	public Contracheque getContracheque(Integer codigo) throws ObjectNotFoundException {
+	public ContrachequeDTO getContracheque(Integer codigo) throws ObjectNotFoundException {
 		UsuarioSpringSecurity user = UserService.authenticated();
 		if (user == null || (!user.hasRole(PerfilAcesso.ADMINISTRADOR) && !codigo.equals(user.getCodigo()))) {
 			throw new AuthorizationException("Acesso negado." + codigo + "-" + user.getCodigo());
 		}
 		Funcionario funcionario = find(codigo);
 		CalculadoraContracheque calculadoraContracheque = new CalculadoraContracheque(funcionario);
-		Contracheque contracheque = calculadoraContracheque.getContraCheque();
+		ContrachequeDTO contracheque = calculadoraContracheque.getContraCheque();
 		return contracheque;
 	}
 

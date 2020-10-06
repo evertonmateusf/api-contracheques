@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.stone.apicontracheques.domain.Contracheque;
+import com.stone.apicontracheques.dto.ContrachequeDTO;
 import com.stone.apicontracheques.dto.credenciais.CredenciaisDTO;
 import com.stone.apicontracheques.repositories.FuncionarioRepository;
 import com.stone.apicontracheques.resources.FuncionarioResource;
@@ -69,104 +69,182 @@ class ContrachequesResourceTests {
 	}
 
 	@Test
-	void getContraCheque07_5PorCentoINSS() throws Exception {
-		//salario bruto 1000
-		//IR isento (< 1903,98)
-		//desconta plano de saude (-10), 
-		//descpmta dental(-5) 
-		//isento de desconto de VT, pois ganha menos de 1500 (VT seria 6% sobre o bruto)
-		//FGTS 8% sobre o bruto -80
-		//INSS 7,5% sobre o bruto -75
-		//liquido 830
+	void getContraCheque07_5PorCentoINSSIsentoIR() throws Exception {
 		String codigo = "1";
 		Calendar rightNow = Calendar.getInstance();
-		Contracheque contracheque = new Contracheque();
+		ContrachequeDTO contracheque = new ContrachequeDTO();
 		contracheque.setSalarioBruto(1000);
 		contracheque.setTotalDescontos(-170);
 		contracheque.setSalarioLiquido(830);
-		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH+1));
+		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
 
-		mockMvc.perform(
-				get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
-				.header("Authorization", getToken()))
-				.andDo(print())
-				.andExpect(status().isOk())
+		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
+				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
 				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
 				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
 				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
 				.andExpect(jsonPath("$.salarioLiquido", is(contracheque.getSalarioLiquido())))
-				.andExpect(jsonPath("$.lancamentos", hasSize(5) ) )
-                .andExpect(jsonPath("$.lancamentos[1].tipoLancamento", is("DESCONTO")))
-                .andExpect(jsonPath("$.lancamentos[1].valor", is(75.0)))
-                .andExpect(jsonPath("$.lancamentos[1].descricao", is("INSS")));
+				.andExpect(jsonPath("$.lancamentos", hasSize(5)))
+				.andExpect(jsonPath("$.lancamentos[0].tipoLancamento", is("REMUNERACAO")))
+				.andExpect(jsonPath("$.lancamentos[0].valor", is(1000.0)))
+				.andExpect(jsonPath("$.lancamentos[0].descricao", is("Salário")))
+				.andExpect(jsonPath("$.lancamentos[1].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[1].valor", is(75.0)))
+				.andExpect(jsonPath("$.lancamentos[1].descricao", is("INSS")))
+				.andExpect(jsonPath("$.lancamentos[2].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[2].valor", is(10.0)))
+				.andExpect(jsonPath("$.lancamentos[2].descricao", is("Plano De Saude")))
+				.andExpect(jsonPath("$.lancamentos[3].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[3].valor", is(5.0)))
+				.andExpect(jsonPath("$.lancamentos[3].descricao", is("Plano Dental")))
+				.andExpect(jsonPath("$.lancamentos[4].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[4].valor", is(80.0)))
+				.andExpect(jsonPath("$.lancamentos[4].descricao", is("FGTS")));
+	}
 
-		// JacksonJsonParser jsonParser = new JacksonJsonParser();
-		// Map<String, Object> objReturned = jsonParser.parseMap(result.andReturn().getResponse().getContentAsString());
-		
-		// Assertions.assertEquals(contracheque.getMesReferencia(), objReturned.get("mesReferencia"));
-		// Assertions.assertEquals(contracheque.getTotalDescontos(), objReturned.get("totalDescontos"));
-		// Assertions.assertEquals(contracheque.getSalarioBruto(), objReturned.get("salarioBruto"));
-		// Assertions.assertEquals(contracheque.getSalarioLiquido(), objReturned.get("salarioLiquido"));
-	}
 	@Test
-	void getContraCheque9PorCentoINSS() throws Exception {
-		Assertions.assertEquals(1, 2);
+	void getContraCheque9PorCentoINSS7_5PorCentoIR() throws Exception {
+		String codigo = "2";
+		Calendar rightNow = Calendar.getInstance();
+		ContrachequeDTO contracheque = new ContrachequeDTO();
+		contracheque.setSalarioBruto(2000);
+		contracheque.setTotalDescontos(-497.8);
+		contracheque.setSalarioLiquido(1502.2);
+		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
+
+		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
+				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
+				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
+				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
+				.andExpect(jsonPath("$.salarioLiquido", is(contracheque.getSalarioLiquido())))
+				.andExpect(jsonPath("$.lancamentos", hasSize(6)))
+				.andExpect(jsonPath("$.lancamentos[0].tipoLancamento", is("REMUNERACAO")))
+				.andExpect(jsonPath("$.lancamentos[0].valor", is(2000.0)))
+				.andExpect(jsonPath("$.lancamentos[0].descricao", is("Salário")))
+				.andExpect(jsonPath("$.lancamentos[1].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[1].valor", is(180.0)))
+				.andExpect(jsonPath("$.lancamentos[1].descricao", is("INSS")))
+				.andExpect(jsonPath("$.lancamentos[2].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[2].valor", is(142.8)))
+				.andExpect(jsonPath("$.lancamentos[2].descricao", is("Imposto De Renda")))
+				.andExpect(jsonPath("$.lancamentos[3].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[3].valor", is(10.0)))
+				.andExpect(jsonPath("$.lancamentos[3].descricao", is("Plano De Saude")))
+				.andExpect(jsonPath("$.lancamentos[4].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[4].valor", is(5.0)))
+				.andExpect(jsonPath("$.lancamentos[4].descricao", is("Plano Dental")))
+				.andExpect(jsonPath("$.lancamentos[5].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[5].valor", is(160.0)))
+				.andExpect(jsonPath("$.lancamentos[5].descricao", is("FGTS")));
 	}
+
 	@Test
-	void getContraCheque12PorCentoINSS() throws Exception {
-		Assertions.assertEquals(1, 2);
+	void getContraCheque12PorCentoINSS15PorCentoIR() throws Exception {
+		String codigo = "3";
+		Calendar rightNow = Calendar.getInstance();
+		ContrachequeDTO contracheque = new ContrachequeDTO();
+		contracheque.setSalarioBruto(3000);
+		contracheque.setTotalDescontos(-1144.8);
+		contracheque.setSalarioLiquido(1855.2);
+		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
+
+		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
+				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
+				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
+				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
+				.andExpect(jsonPath("$.salarioLiquido", is(contracheque.getSalarioLiquido())))
+				.andExpect(jsonPath("$.lancamentos", hasSize(6)))
+				.andExpect(jsonPath("$.lancamentos[0].tipoLancamento", is("REMUNERACAO")))
+				.andExpect(jsonPath("$.lancamentos[0].valor", is(3000.0)))
+				.andExpect(jsonPath("$.lancamentos[0].descricao", is("Salário")))
+				.andExpect(jsonPath("$.lancamentos[1].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[1].valor", is(360.0)))
+				.andExpect(jsonPath("$.lancamentos[1].descricao", is("INSS")))
+				.andExpect(jsonPath("$.lancamentos[2].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[2].valor", is(354.8)))
+				.andExpect(jsonPath("$.lancamentos[2].descricao", is("Imposto De Renda")))
+				.andExpect(jsonPath("$.lancamentos[3].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[3].valor", is(10.0)))
+				.andExpect(jsonPath("$.lancamentos[3].descricao", is("Plano De Saude")))
+				.andExpect(jsonPath("$.lancamentos[4].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[4].valor", is(180.0)))
+				.andExpect(jsonPath("$.lancamentos[4].descricao", is("Vale Transporte")))
+				.andExpect(jsonPath("$.lancamentos[5].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[5].valor", is(240.0)))
+				.andExpect(jsonPath("$.lancamentos[5].descricao", is("FGTS")));
 	}
+
 	@Test
-	void getContraCheque14PorCentoINSS() throws Exception {
-		Assertions.assertEquals(1, 2);
+	void getContraCheque14PorCentoINSS22_5PorCentoIR() throws Exception {
+		String codigo = "4";
+		Calendar rightNow = Calendar.getInstance();
+		ContrachequeDTO contracheque = new ContrachequeDTO();
+		contracheque.setSalarioBruto(4000);
+		contracheque.setTotalDescontos(-1761.13);
+		contracheque.setSalarioLiquido(2238.87);
+		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
+
+		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
+				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
+				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
+				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
+				.andExpect(jsonPath("$.salarioLiquido", is(contracheque.getSalarioLiquido())))
+				.andExpect(jsonPath("$.lancamentos", hasSize(6)))
+				.andExpect(jsonPath("$.lancamentos[0].tipoLancamento", is("REMUNERACAO")))
+				.andExpect(jsonPath("$.lancamentos[0].valor", is(4000.0)))
+				.andExpect(jsonPath("$.lancamentos[0].descricao", is("Salário")))
+				.andExpect(jsonPath("$.lancamentos[1].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[1].valor", is(560.0)))
+				.andExpect(jsonPath("$.lancamentos[1].descricao", is("INSS")))
+				.andExpect(jsonPath("$.lancamentos[2].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[2].valor", is(636.13)))
+				.andExpect(jsonPath("$.lancamentos[2].descricao", is("Imposto De Renda")))
+				.andExpect(jsonPath("$.lancamentos[3].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[3].valor", is(5.0)))
+				.andExpect(jsonPath("$.lancamentos[3].descricao", is("Plano Dental")))
+				.andExpect(jsonPath("$.lancamentos[4].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[4].valor", is(240.0)))
+				.andExpect(jsonPath("$.lancamentos[4].descricao", is("Vale Transporte")))
+				.andExpect(jsonPath("$.lancamentos[5].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[5].valor", is(320.0)))
+				.andExpect(jsonPath("$.lancamentos[5].descricao", is("FGTS")));
 	}
-	@Test
-	void getContraCheque07_5PorCentoIR() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraCheque15PorCentoIR() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraCheque22_5PorCentoIR() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
+
 	@Test
 	void getContraCheque27_5PorCentoIR() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraChequeComDescontoPlanoSaudeEDentalETransporte() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraChequeComDescontoDentalETransporte() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraChequeComDescontoPlanoSaudeETransporte() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraChequeComDescontoPlanoSaudeEDental() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraChequeComDescontoPlanoSaude() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraChequeComDescontoDental() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraChequeComDescontoTransporte() throws Exception {
-		Assertions.assertEquals(1, 2);
-	}
-	@Test
-	void getContraChequeCom8PorCentoFGTS() throws Exception {
-		Assertions.assertEquals(1, 2);
+		String codigo = "5";
+		Calendar rightNow = Calendar.getInstance();
+		ContrachequeDTO contracheque = new ContrachequeDTO();
+		contracheque.setSalarioBruto(5000);
+		contracheque.setTotalDescontos(-1979.36);
+		contracheque.setSalarioLiquido(3020.64);
+		contracheque.setMesReferencia(rightNow.get(Calendar.MONTH)+1);
+
+		mockMvc.perform(get("/funcionarios/" + codigo + "/contracheque").contentType("application/json")
+				.header("Authorization", getToken())).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.mesReferencia", is(contracheque.getMesReferencia())))
+				.andExpect(jsonPath("$.totalDescontos", is(contracheque.getTotalDescontos())))
+				.andExpect(jsonPath("$.salarioBruto", is(contracheque.getSalarioBruto())))
+				.andExpect(jsonPath("$.salarioLiquido", is(contracheque.getSalarioLiquido())))
+				.andExpect(jsonPath("$.lancamentos", hasSize(5)))
+				.andExpect(jsonPath("$.lancamentos[0].tipoLancamento", is("REMUNERACAO")))
+				.andExpect(jsonPath("$.lancamentos[0].valor", is(5000.0)))
+				.andExpect(jsonPath("$.lancamentos[0].descricao", is("Salário")))
+				.andExpect(jsonPath("$.lancamentos[1].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[1].valor", is(700.0)))
+				.andExpect(jsonPath("$.lancamentos[1].descricao", is("INSS")))
+				.andExpect(jsonPath("$.lancamentos[2].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[2].valor", is(869.36)))
+				.andExpect(jsonPath("$.lancamentos[2].descricao", is("Imposto De Renda")))
+				.andExpect(jsonPath("$.lancamentos[3].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[3].valor", is(10.0)))
+				.andExpect(jsonPath("$.lancamentos[3].descricao", is("Plano De Saude")))
+				.andExpect(jsonPath("$.lancamentos[4].tipoLancamento", is("DESCONTO")))
+				.andExpect(jsonPath("$.lancamentos[4].valor", is(400.0)))
+				.andExpect(jsonPath("$.lancamentos[4].descricao", is("FGTS")));
 	}
 
 }

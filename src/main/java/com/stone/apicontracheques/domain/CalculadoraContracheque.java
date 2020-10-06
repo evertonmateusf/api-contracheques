@@ -13,6 +13,7 @@ import com.stone.apicontracheques.domain.lancamentos.PlanoDeSaude;
 import com.stone.apicontracheques.domain.lancamentos.PlanoDental;
 import com.stone.apicontracheques.domain.lancamentos.Salario;
 import com.stone.apicontracheques.domain.lancamentos.ValeTransporte;
+import com.stone.apicontracheques.dto.ContrachequeDTO;
 
 public class CalculadoraContracheque{
 
@@ -57,9 +58,9 @@ public class CalculadoraContracheque{
 		this.funcionario = funcionario;
 	}
 
-	public Contracheque getContraCheque(){
-		Contracheque contracheque = new Contracheque();
-		contracheque.setMesReferencia(Calendar.getInstance().get(Calendar.MONTH+1) );
+	public ContrachequeDTO getContraCheque(){
+		ContrachequeDTO contracheque = new ContrachequeDTO();
+		contracheque.setMesReferencia(Calendar.getInstance().get(Calendar.MONTH)+1 );
 		contracheque.setSalarioBruto(funcionario.getSalarioBruto());
 		contracheque.setSalarioLiquido(getSalarioLiquido());
 		contracheque.setTotalDescontos(getTotalDescontos());
@@ -70,7 +71,7 @@ public class CalculadoraContracheque{
 	private double getSalarioLiquido() {
 		lancamentos = getLancamentos();
 		double salarioLiquido = funcionario.getSalarioBruto() + getTotalDescontos();
-		return salarioLiquido;
+		return Math.round(salarioLiquido * 100) / 100d;
 	}
 
 	private double getTotalDescontos() {
@@ -82,7 +83,7 @@ public class CalculadoraContracheque{
 				}
 			}
 		}
-		return totalDescontos;
+		return Math.round(totalDescontos * 100) / 100d;
 	}
 	
 }

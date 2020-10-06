@@ -4,8 +4,8 @@ import java.net.URI;
 
 import javax.validation.Valid;
 
-import com.stone.apicontracheques.domain.Contracheque;
 import com.stone.apicontracheques.domain.Funcionario;
+import com.stone.apicontracheques.dto.ContrachequeDTO;
 import com.stone.apicontracheques.dto.FuncionarioDTO;
 import com.stone.apicontracheques.services.FuncionarioService;
 import com.stone.apicontracheques.services.exceptions.DataIntegrityException;
@@ -43,7 +43,7 @@ public class FuncionarioResource {
 	@ApiOperation(value = "Devolve o contracheque do funcionário do mês atual")
 	@RequestMapping(value = "/{codigo}/contracheque", method = RequestMethod.GET)
 	public ResponseEntity<?> getContracheque(@PathVariable Integer codigo) throws ObjectNotFoundException {
-		Contracheque obj = service.getContracheque(codigo);
+		ContrachequeDTO obj = service.getContracheque(codigo);
 		return ResponseEntity.ok().body(obj);
 	}
 

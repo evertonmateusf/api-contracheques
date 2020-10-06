@@ -1,6 +1,8 @@
 package com.stone.apicontracheques.domain.lancamentos;
 
 import java.io.Serializable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stone.apicontracheques.domain.Funcionario;
@@ -36,7 +38,7 @@ public abstract class Lancamento implements Serializable, IAplicavel, ICalculave
 	}
 
 	public double getValor() {
-		return this.calcular();
+		return Math.round(this.calcular() * 100) / 100d;
 	}
 
 	public void setValor(double valor) {

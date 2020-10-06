@@ -21,11 +21,11 @@ public class ImpostoDeRenda extends Lancamento {
 		if (funcionario.getSalarioBruto() <= 1903.98) {
 			valorDesconto = 0;
 		}else if (funcionario.getSalarioBruto() <= 2826.65) {
-			valorDesconto = funcionario.getSalarioBruto() * 0.075;
+			valorDesconto = Math.min(funcionario.getSalarioBruto() * 0.075, 142.80);
 		} else if (funcionario.getSalarioBruto() <= 3751.05) {
-			valorDesconto = funcionario.getSalarioBruto() * 0.15;
+			valorDesconto = Math.min(funcionario.getSalarioBruto() * 0.15, 354.80);
 		} else if (funcionario.getSalarioBruto() <= 4664.68) {
-			valorDesconto = funcionario.getSalarioBruto() * 0.225;
+			valorDesconto = Math.min(funcionario.getSalarioBruto() * 0.225, 636.13);
 		} else {
 			valorDesconto = Math.min(funcionario.getSalarioBruto() * 0.275, 869.36);
 		}

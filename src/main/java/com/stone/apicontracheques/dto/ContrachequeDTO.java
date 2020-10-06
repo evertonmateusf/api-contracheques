@@ -1,13 +1,12 @@
-package com.stone.apicontracheques.domain;
+package com.stone.apicontracheques.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stone.apicontracheques.domain.lancamentos.Lancamento;
 
-public class Contracheque implements Serializable {
+public class ContrachequeDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer mesReferencia;
@@ -16,10 +15,10 @@ public class Contracheque implements Serializable {
 	private double salarioLiquido;
 	private List<Lancamento> lancamentos = new ArrayList<>();
 
-	public Contracheque() {
+	public ContrachequeDTO() {
 	}
 
-	public Contracheque(Integer mesReferencia, double totalDescontos, double salarioBruto, double salarioLiquido,
+	public ContrachequeDTO(Integer mesReferencia, double totalDescontos, double salarioBruto, double salarioLiquido,
 			List<Lancamento> lancamentos) {
 		this.mesReferencia = mesReferencia;
 		this.totalDescontos = totalDescontos;
