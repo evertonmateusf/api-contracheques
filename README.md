@@ -11,5 +11,7 @@ A aplicação será hospedada no Heroku.
 [x] Buscar funcionário por código  
 [x] Incluir funcionário  
 [x] Altertar funcionário  
-[-] Documentação de APIs com Swagger (http://localhost:8080/swagger-ui.html)  
-[] Buscar contracheque do funcionário  
+[x] Documentação de APIs com Swagger (http://localhost:8080/swagger-ui.html)  
+[x] Buscar contracheque do funcionário  
+[x] Hospedagem da aplicação no Heroku (https://api-contracheques.herokuapp.com/)
+[-] Deploy automatizado usando o Travis-CI
