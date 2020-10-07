@@ -1,11 +1,9 @@
 disty: trusty
 language: java
-jdk:
-    oraclejdk8
-before_install:
-    export=TZ=Brazil/East
+jdk: oraclejdk8
+before_install: export=TZ=Brazil/East
 deploy:
-    provider: heroku
-    api_key:
-        secure: $KEY
-    app: api-contracheques
+  provider: heroku
+  api_key:
+    secure: S9wLIg5eDTlkURPnGTtgMECiJuyPFtMuNhijVsbHTodLG5Vl/c8iR0dIMOjKt1IWaGHnD3egmfjXF5iq3HjRSp/3rwWPeLZoTtQMl/BfZhK8FhcoLK1qw5Sjl9j20DnRGD4qDL9AE5f49S+0MnqWGlsFLzekokoG/aaBD6z16TJXPjJjxJTCCJqxf7WQBwaJGCU3gryq48XGwwkooSz9Y47lEkFfjG5mKLizyM2krrCdsWa6c/HCgGl+baz7KlrlX+CjkN3AB047ZyK6NPgQ+wZOfDjzXf7/AH+t607kRUi/tVH59JwwuNuOCj2sqAuKWo8eT2cndS0BHdS3qXY2XVwrFmlSw5n1ksE7UYJ7wTbJW23hU6WjmTfbtLBbcvBs01YExgCdv2FSEXe1qmfaHtE95uuyVIgPnpZRTluXdgB8QP3iYzhQlz/XWn/v6UHYT8IuD7k87YxFFwjQerJXQlYahHBNhpPyHf5N1ejbcSMYM78LZ3lo8IICboXptn8r4nCixYU2TIBQvuV64i/oVwKtxr3q2SQuQQjxznuN42q3e/pAMMpWwX9wuSZFl2aGAq1IdSaC9Zd+VVmJrP4ZPVmqwLjqtnkxf+sCuXWbS5+hZjGq6KxrDQRkUjHXdwvOA3uf8iZIQgHMUygtkO9iPGX4CTpvdZBEGPwd89ghx6s=
+  app: api-contracheques
