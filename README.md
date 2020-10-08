@@ -7,10 +7,7 @@ O banco de dados principal da aplicação será MySql e o banco de dados de test
 Testes unitários feitos com JUnit e MockMvc.   
 A aplicação será hospedada no Heroku.  
 # Variáveis de sistema para acesso ao DB
-DB_USERNAME  
-DB_PASSWORD  
-DB_HOST  
-DB_PORT  
+CLEARDB_DATABASE_URL
 DDL_AUTO -> Opções: create (Cria a estrutura de tabelas do banco e alimenta com dados de teste) OU none (mantem a estrutura atual de tabelas)  
 # Funcionalidades
 [x] Login  
