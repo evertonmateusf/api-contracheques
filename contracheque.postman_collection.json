@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "3ba71d0f-86a7-43c3-ab51-8d62a8a2e816",
+		"name": "contracheque",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Buscar Contracheque do Funcionario",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Encoding",
+						"type": "text",
+						"value": "utf-8"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJldmVydG9uLm1mZXJuYW5kZXNAZ21haWwuY29tIiwiZXhwIjoxNjAyMjA4NTg2fQ.IUTBx-0XbyK2DaCo4UzOD8jLh7YMfOkMEsu74jb0w2x0wK94WS-nzbNfFF-nZ05m6RhPC-G-Z6tsYa-SL05MZw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"everton.mfernandes@gmail.com\",\n    \"senha\": \"ED260j1u22\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/funcionarios/8/contracheque",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"funcionarios",
+						"8",
+						"contracheque"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "linesPerPage",
+							"value": "10",
+							"disabled": true
+						},
+						{
+							"key": "orderBy",
+							"value": "status,codigo",
+							"disabled": true
+						},
+						{
+							"key": "direction",
+							"value": "ASC",
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": "dateOfBirth",
+							"disabled": true
+						},
+						{
+							"key": "text",
+							"value": "jardim",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Busca pedidos por texto"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"everton.mfernandes@gmail.com\",\n    \"senha\": \"1234\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "/login",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Adicionar Funcionario",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJldmVydG9uLm1mZXJuYW5kZXNAZ21haWwuY29tIiwiZXhwIjoxNjAyMjA4MTE0fQ.77-0CYWYIhH0lwdz98TUHsp7RP2q-iZC4PcA80ewe0Vxr0dfs-0KdYnKlAuq61q2V-GQPthh1Bq5v6gYB-dbGQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"Daiane Sarah\",\n    \"sobrenome\": \"Porto\",\n    \"documento\": \"36553485844\",\n    \"setor\": \"RH\",\n    \"salarioBruto\": 1000.0,\n    \"dataDeAdmissao\": \"2019-01-02\",\n    \"descontaPlanoDeSaude\": true,\n    \"descontaPlanoDental\": true,\n    \"descontaValeTransporte\": true\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/funcionarios/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"funcionarios",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Funcionarios",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept-Encoding",
+						"type": "text",
+						"value": "utf-8"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJldmVydG9uLm1mZXJuYW5kZXNAZ21haWwuY29tIiwiZXhwIjoxNjAyMjA4NTg2fQ.IUTBx-0XbyK2DaCo4UzOD8jLh7YMfOkMEsu74jb0w2x0wK94WS-nzbNfFF-nZ05m6RhPC-G-Z6tsYa-SL05MZw"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"everton.mfernandes@gmail.com\",\n    \"senha\": \"ED260j1u22\"\n}",
+					"options": {
+						"raw": {}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/funcionarios/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"funcionarios",
+						""
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "linesPerPage",
+							"value": "10",
+							"disabled": true
+						},
+						{
+							"key": "orderBy",
+							"value": "status,codigo",
+							"disabled": true
+						},
+						{
+							"key": "direction",
+							"value": "ASC",
+							"disabled": true
+						},
+						{
+							"key": "order",
+							"value": "dateOfBirth",
+							"disabled": true
+						},
+						{
+							"key": "text",
+							"value": "jardim",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Busca pedidos por texto"
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
