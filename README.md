@@ -7,8 +7,7 @@ O banco de dados principal da aplicação será MySql e o banco de dados de test
 Testes unitários feitos com JUnit e MockMvc.   
 A aplicação será hospedada no Heroku.  
 # Variáveis de sistema para acesso ao DB
-CLEARDB_DATABASE_URL
-DDL_AUTO -> Opções: create (Cria a estrutura de tabelas do banco e alimenta com dados de teste) OU none (mantem a estrutura atual de tabelas)  
+CLEARDB_DATABASE_URL ->Exemplo: `mysql://<usuario>:<senha>@<host>:<port>/<database_name>?reconnect=true&serverTimezone=America/Sao_Paulo`
 # Funcionalidades
 [x] Login  
 [x] Buscar funcionário por código  
@@ -16,5 +15,5 @@ DDL_AUTO -> Opções: create (Cria a estrutura de tabelas do banco e alimenta co
 [x] Altertar funcionário  
 [x] Documentação de APIs com Swagger (http://localhost:8080/swagger-ui.html)  
 [x] Buscar contracheque do funcionário  
-[x] Hospedagem da aplicação no Heroku (https://api-contracheques.herokuapp.com/)
+[x] Hospedagem da aplicação no Heroku (https://api-contracheques.herokuapp.com/)  
 [x] Deploy automatizado usando o Travis-CI
