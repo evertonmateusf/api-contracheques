@@ -116,9 +116,9 @@ class FuncionariosResourceTests {
 		funcionarioDTO.setSetor("Marketing");
 		funcionarioDTO.setSalarioBruto(9865);
 		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-02 13:55"));
-		funcionarioDTO.setDescontaPlanoDeSaude("true");
-		funcionarioDTO.setDescontaPlanoDental("false");
-		funcionarioDTO.setDescontaValeTransporte("false");
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(false);
 		mockMvc.perform(
 			post("/funcionarios")
 			.contentType("application/json")
@@ -135,9 +135,9 @@ class FuncionariosResourceTests {
 		funcionarioDTO.setSetor("Marketing");
 		funcionarioDTO.setSalarioBruto(9865);
 		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-02 13:55"));
-		funcionarioDTO.setDescontaPlanoDeSaude("true");
-		funcionarioDTO.setDescontaPlanoDental("false");
-		funcionarioDTO.setDescontaValeTransporte("false");
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(false);
 		ResultActions result = mockMvc.perform(
 				post("/funcionarios")
 				.contentType("application/json")
@@ -171,9 +171,9 @@ class FuncionariosResourceTests {
 		funcionarioDTO.setSetor("Marketing");
 		funcionarioDTO.setSalarioBruto(9865);
 		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-02 13:55"));
-		funcionarioDTO.setDescontaPlanoDeSaude("true");
-		funcionarioDTO.setDescontaPlanoDental("false");
-		funcionarioDTO.setDescontaValeTransporte("false");
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(false);
 		mockMvc.perform(
 				post("/funcionarios")
 				.contentType("application/json")
@@ -195,9 +195,9 @@ class FuncionariosResourceTests {
 		funcionarioDTO.setSetor("RH");
 		funcionarioDTO.setSalarioBruto(1000);
 		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-02"));
-		funcionarioDTO.setDescontaPlanoDeSaude("true");
-		funcionarioDTO.setDescontaPlanoDental("true");
-		funcionarioDTO.setDescontaValeTransporte("true");
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(true);
+		funcionarioDTO.setDescontaValeTransporte(true);
 		mockMvc.perform(
 				post("/funcionarios")
 				.contentType("application/json")
@@ -219,9 +219,9 @@ class FuncionariosResourceTests {
 		funcionarioDTO.setSetor("Vendas");
 		funcionarioDTO.setSalarioBruto(7000);
 		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-03"));
-		funcionarioDTO.setDescontaPlanoDeSaude("true");
-		funcionarioDTO.setDescontaPlanoDental("false");
-		funcionarioDTO.setDescontaValeTransporte("true");
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(true);
 		mockMvc.perform(
 			put("/funcionarios/1")
 			.contentType("application/json")
@@ -238,9 +238,9 @@ class FuncionariosResourceTests {
 		funcionarioDTO.setSetor("Vendas");
 		funcionarioDTO.setSalarioBruto(7000);
 		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-03"));
-		funcionarioDTO.setDescontaPlanoDeSaude("true");
-		funcionarioDTO.setDescontaPlanoDental("false");
-		funcionarioDTO.setDescontaValeTransporte("true");
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(true);
 		mockMvc.perform(
 			put("/funcionarios/1")
 			.contentType("application/json")
@@ -271,9 +271,9 @@ class FuncionariosResourceTests {
 		funcionarioDTO.setSetor("Vendas");
 		funcionarioDTO.setSalarioBruto(7000);
 		funcionarioDTO.setDataDeAdmissao(sdf.parse("2019-01-03"));
-		funcionarioDTO.setDescontaPlanoDeSaude("true");
-		funcionarioDTO.setDescontaPlanoDental("false");
-		funcionarioDTO.setDescontaValeTransporte("true");
+		funcionarioDTO.setDescontaPlanoDeSaude(true);
+		funcionarioDTO.setDescontaPlanoDental(false);
+		funcionarioDTO.setDescontaValeTransporte(true);
 		mockMvc.perform(
 			put("/funcionarios/9999")
 			.contentType("application/json")
