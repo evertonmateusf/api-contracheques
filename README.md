@@ -1,5 +1,9 @@
 # api-contracheques
 Projeto de aplicação responsável por criar o extrato da folha salarial dos funcionários.
+Para acessar a versão de demonstração acesse [https://frontend-api-contracheques.herokuapp.com/](https://frontend-api-contracheques.herokuapp.com/)   
+Usuário: everton.mfernandes@gmail.com   
+Senha: 1234  
+O repositório do frontend está [aqui](https://github.com/evertonmateusf/frontend-api-contracheques)  
 
 # Arquitetura
 Aplicação Java 8 utilizando JPA e Spring Boot para expor as APIs. As APIs estão protegidas com o padrão OAuth2 e JWT.     

@@ -1,8 +1,6 @@
 package com.stone.apicontracheques.domain.lancamentos;
 
 import java.io.Serializable;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.stone.apicontracheques.domain.Funcionario;
