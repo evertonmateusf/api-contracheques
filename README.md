@@ -17,7 +17,7 @@ CLEARDB_DATABASE_URL ->Exemplo: `mysql://<usuario>:<senha>@<host>:<port>/<databa
 [x] Buscar funcionário por código  
 [x] Incluir funcionário  
 [x] Altertar funcionário  
-[x] Documentação de APIs com Swagger (http://localhost:8080/swagger-ui.html)  
+[x] Documentação de APIs com Swagger (https://api-contracheques.herokuapp.com/swagger-ui.html)  
 [x] Buscar contracheque do funcionário  
 [x] Hospedagem da aplicação no Heroku (https://api-contracheques.herokuapp.com/)  
 [x] Deploy automatizado usando o Travis-CI
